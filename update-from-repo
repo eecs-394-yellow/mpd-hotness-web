@@ -1,0 +1,24 @@
+#!/bin/bash
+
+mtime() {
+    stat -f '%m' $1
+}
+
+dbexec() {
+    # File should define USER, PASS, DB, and HOST variables
+    . database-config
+    mysql --user=$USER --password=$PASS --host=$HOST --database=$DB < $1
+}
+
+for dbscript in *.sql ; do
+    mtime $dbscript > mtime.${dbscript/.sql}
+done
+
+git pull
+
+for dbscript in *.sql ; do
+    if [[ $(cat mtime.${dbscript/.sql}) -ne $(mtime $dbscript) ]] ; then
+        dbexec $dbscript
+    fi
+    rm mtime.${dbscript/.sql}
+done
