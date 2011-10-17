@@ -1,5 +1,5 @@
 <?php
-
+// submission page.  Should this be the index?
 require('config.php');
 require('database-util.php');
 
