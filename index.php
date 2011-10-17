@@ -1,22 +1,22 @@
 <?php
-$con = mysql_connect("SERVER_ADDRESS","SQL_USERNAME","SQL_PASS");
-//TODO: pull server address, username, pass from database-config.php
-if(!$con)
-	{
-	die('Could not connect: ' . mysql_error());
-	}
+
+require('./database-config.php');
+
+$con = new PDO("mysql:host=$HOST;dbname=$DB", $USER, $PASS);
+
+if(!$con) {
+    die('Could not connect: ' . mysql_error());
+}
 	
-mysql_select_db("Note", $con);
+$sql = 'CALL usp_insert_note(?, ?, ?, ?);';
+$sth = $con->prepare($sql);
 
-$sql="INSERT INTO Note (user_name, location_description, note_text)
-VALUES
-('$_POST[authorField]','$_POST[locationField]','$_POST[notesField]')";
-
-if (!mysql_query($sql,$con))
-	{
-	die('Error: ' . mysql_error());
-	}
+if(!$sth->execute(array($_POST['deviceIdField'],
+                    $_POST['authorField'], 
+                    $_POST['locationField'],
+                    $_POST['notesField'])) {
+    die('Error: ' . $sth->errorCode());
+}
 echo "Note added!";
 
-mysql_close($con);
 ?>
