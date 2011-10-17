@@ -3,7 +3,7 @@ drop table if exists Note;
 
 create table Note (
     -- device UUID
-    device_id varbinary(16) not null,
+    device_id binary(16) not null,
     -- username (not really verified)
     user_name varchar(32) not null,
     -- posting time
