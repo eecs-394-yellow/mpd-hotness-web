@@ -1,12 +1,8 @@
 <?php
 
-require('./database-config.php');
+require('./database-util.php');
 
-$con = new PDO("mysql:host=$HOST;dbname=$DB", $USER, $PASS);
-
-if(!$con) {
-    die('Could not connect: ' . mysql_error());
-}
+$con = get_connection();
 	
 $sql = 'CALL usp_insert_note(?, ?, ?, ?);';
 $sth = $con->prepare($sql);

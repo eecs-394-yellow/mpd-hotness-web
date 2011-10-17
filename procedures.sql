@@ -3,5 +3,5 @@ delimiter //
 create procedure usp_insert_note(deviceId CHAR(36), author VARCHAR(32), location VARCHAR(255), notes VARCHAR(255))
 begin
     insert into Note(device_id, user_name, time, location_description, note_text)
-                values(uuid_to_binary(deviceId), author, NOW(), location, notes);
+                values(binary_from_uuid(deviceId), author, NOW(), location, notes);
 end//
