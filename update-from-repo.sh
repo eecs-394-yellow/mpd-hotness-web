@@ -11,15 +11,18 @@ dbexec() {
     mysql --user=$USER --password=$PASS --host=$HOST --database=$DB < $1
 }
 
+gettmp() {
+    echo /tmp/mtime.${1/.sql}
+}
+
+getchanged() {
+    git log --name-only -n1 | sed -n -e '1,/^ *$/d' -e '\@^db/@p'
+}
+
 runchanged() {
-    for dbscript in *.sql ; do
-        if [[ $(cat $(gettmp $dbscript)) -ne $(mtime $dbscript) ]] ; then
-            echo "$dbscript updated"
-            dbexec $dbscript
-        else
-            echo "$dbscript not updated"
-        fi
-        rm $(gettmp $dbscript)
+    for dbscript in $(getchanged) ; do
+        echo "$dbscript updated"
+        dbexec $dbscript
     done
 }
 
@@ -28,13 +31,11 @@ case "$1" in
         export dbexec
     ;;
     *)
-        pushd db
-        echo Saving SQL 
-        savemtimes
         echo Running git pull
+        echo
         git pull --progress remote-readonly master
         echo Running updated SQL
+        echo
         runchanged
-        popd
     ;;
 esac
