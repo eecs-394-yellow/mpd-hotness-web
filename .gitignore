@@ -1,2 +1,3 @@
 # never commit database config values
 database-config
+database-config.php
