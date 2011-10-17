@@ -1,0 +1,21 @@
+This is the Web-application of our GeoNotes project.  The database
+layer is stored in the .sql scripts, which are currently as follows:
+    - tables.sql contains the statements which create the database
+      structure
+    - functions.sql contains stored functions which assist with 
+      conversions and representations
+    - procedures.sql contains stored procedures for uniform data 
+      retrieval
+
+There are two database configuration files that are not included which should be created before trying to use this application:
+    - database-admin should describe a user that has privileges to        modify the database.
+      The script must take the form of a shell script that exports        the environment variables HOST, DB, USER, and PASS.
+    - database-config.php should describe a user that just has
+      select, insert, and update privileges.  It should define $DSN,
+      $USER, and $PASS.
+
+The repo is not designed to live in the root directory of the Web server.  Instead, it should be placed in a directory readable from the Web server document root, and setup.sh from the repo should be run; e.g: 
+
+/home/protected/geonotes-web$ ./setup.sh /home/public/
+
+Which will create the necessary symbolic links.
