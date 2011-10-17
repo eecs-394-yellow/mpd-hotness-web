@@ -1,16 +1,18 @@
 <?php
 header('content-type: text/plain');
 
-require('./database-util.php');
+require('config.php');
+require('database-util.php');
 
-$con = get_connection();
-
-$sql = 'SELECT uuid_from_binary(device_id), user_name, time, location_description, note_text FROM Note';
-
-if($sth = $con->query($sql)) {
-    print_r($sth->fetchAll(PDO::FETCH_ASSOC));
+try {
+    $con = get_connection();
+    $message = $con->call_procedure('get_all_notes', null, PDO::FETCH_ASSOC);
 }
-else {
-    $ei = $con->errorInfo();
-    die($ei[2]);
+catch(ProcedureCallError $err) {
+    $message = array('error' => $err->errorString());
 }
+catch(Exception $ex) {
+    $message = array('error' => last_error_str($ex));
+}
+
+echo json_encode($message);

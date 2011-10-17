@@ -1,7 +1,6 @@
 #!/bin/bash
 
-echo Content-Type: text/plain
-echo
+. database-admin
 
 mtime() {
     stat -f '%m' $1
@@ -9,22 +8,33 @@ mtime() {
 
 dbexec() {
     # File should define USER, PASS, DB, and HOST variables
-    . database-admin
     mysql --user=$USER --password=$PASS --host=$HOST --database=$DB < $1
 }
 
-for dbscript in *.sql ; do
-    mtime $dbscript > mtime.${dbscript/.sql}
-done
+runchanged() {
+    for dbscript in *.sql ; do
+        if [[ $(cat $(gettmp $dbscript)) -ne $(mtime $dbscript) ]] ; then
+            echo "$dbscript updated"
+            dbexec $dbscript
+        else
+            echo "$dbscript not updated"
+        fi
+        rm $(gettmp $dbscript)
+    done
+}
 
-git pull
-
-for dbscript in *.sql ; do
-    if [[ $(cat mtime.${dbscript/.sql}) -ne $(mtime $dbscript) ]] ; then
-        echo "$dbscript updated"
-        dbexec $dbscript
-    else
-        echo "$dbscript not updated"
-    fi
-    rm mtime.${dbscript/.sql}
-done
+case "$1" in
+    env)
+        export dbexec
+    ;;
+    *)
+        pushd db
+        echo Saving SQL 
+        savemtimes
+        echo Running git pull
+        git pull --progress remote-readonly master
+        echo Running updated SQL
+        runchanged
+        popd
+    ;;
+esac
