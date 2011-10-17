@@ -9,7 +9,7 @@ mtime() {
 
 dbexec() {
     # File should define USER, PASS, DB, and HOST variables
-    . database-config
+    . database-admin
     mysql --user=$USER --password=$PASS --host=$HOST --database=$DB < $1
 }
 
