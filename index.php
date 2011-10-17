@@ -1,5 +1,6 @@
 <?php
 $con = mysql_connect("SERVER_ADDRESS","SQL_USERNAME","SQL_PASS");
+//TODO: pull server address, username, pass from database-config.php
 if(!$con)
 	{
 	die('Could not connect: ' . mysql_error());
