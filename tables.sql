@@ -1,3 +1,4 @@
+-- Create and initialize the Note table
 drop table if exists Note;
 
 create table Note (
