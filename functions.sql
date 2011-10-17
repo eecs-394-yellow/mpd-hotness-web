@@ -4,6 +4,7 @@ create function binary_from_uuid(uuid CHAR(36))
   returns binary(16)
   return unhex(replace(uuid, '-', ''));
 
+drop function uuid_from_binary;
 delimiter //
 create function uuid_from_binary(uuid_bin binary(16))
 returns char(36)
