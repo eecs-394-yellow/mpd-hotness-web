@@ -10,9 +10,10 @@ create function uuid_from_binary(uuid_bin binary(16))
 returns char(36)
 begin
     set @uuid = hex(uuid_bin);
-    return concat_ws('-', substring(@uuid, 0, 8), 
-                         substring(@uuid, 8, 12), 
-                         substring(@uuid, 12, 16), 
-                         substring(@uuid, 16, 22));
+    return concat_ws('-', substring(@uuid from 0 for 8), 
+                         substring(@uuid from 8 for 4), 
+                         substring(@uuid from 12 for 4), 
+                         substring(@uuid from 16 for 4),
+                         substring(@uuid from 20 for 12);
 end//
 delimiter ;
