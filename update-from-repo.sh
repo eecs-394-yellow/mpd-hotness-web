@@ -33,7 +33,7 @@ case "$1" in
     *)
         echo Running git pull
         echo
-        git pull --progress remote-readonly master
+        git pull --progress remote-readonly master 2>&1 | cat
         echo Running updated SQL
         echo
         runchanged
