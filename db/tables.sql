@@ -9,7 +9,9 @@ create table Notes (
     -- posting time
     time datetime not null,
     -- user's description of their location
-    location_description varchar(255) not null,
+    location_description varchar(255) null,
+    -- user's location in GPS coordinates
+    gps Point not null,
     -- text of user's note
     note_text varchar(255) not null,
     primary key(device_id, time)
@@ -21,5 +23,6 @@ create view ViewNotes as
            user_name,
            time,
            location_description,
+           AsText(gps) as gps,
            note_text
     from Notes;

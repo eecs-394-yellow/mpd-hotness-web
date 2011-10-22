@@ -15,4 +15,5 @@ catch(Exception $ex) {
     $message = array('error' => last_error_str($ex));
 }
 
-echo json_encode($message);
+include('jsonpretty.php');
+echo indent(json_encode($message));

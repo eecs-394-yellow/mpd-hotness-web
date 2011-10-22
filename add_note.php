@@ -9,26 +9,36 @@ class ArgumentMissingException extends Exception {
     }
 }
 
-function add_note($con, $args) {
-    return $con->call_procedure('add_note', $args);
+function point_wkt($lat, $lon) {
+    if(is_numeric($lat) and is_numeric($lon)) {
+        return "POINT($lat $lon)";
+    }
+    else {
+        throw new Exception("Either latitude or longitude is not numeric");
+    }
 }
 
 function get_add_note_args($req) {
     $args = array();
     $missing = array();
-    $required = array('device_id', 'author', 'location', 'note');
+    $required = array('device_id', 'user_name', 'location_text', 'note');
     foreach($required as $required_arg) {
         if(empty($req[$required_arg])) {
             $missing[] = $required_arg;
         }
         else {
-            $args[] = $req[$required_arg];
+            $args[$required_arg] = $req[$required_arg];
         }
     }
+    $args['gps_wkt'] = point_wkt($req['lat'], $req['lon']);
     if(count($missing)) {
         throw new ArgumentMissingException($missing);
     }
     return $args;
+}
+
+function add_note($con, $args) {
+    return $con->call_procedure('add_note', $args);
 }
 
 $con = get_connection();
@@ -38,7 +48,7 @@ try {
     add_note($con, $args);
     $output = array('succeeded' => 1);
 }
-catch(ArgumentMissingException $e) {
+catch(Exception $e) {
     $output = array('succeeded' => 0, 'error' => $e->getMessage());
 }
 
