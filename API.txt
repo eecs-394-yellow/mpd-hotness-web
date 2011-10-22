@@ -1,0 +1,12 @@
+The API here is pretty straightforward.  The requests take parameters 
+(for now GET or POST, either works) and return JSON.
+
+- All pages return a JSON object with the key 'succeeded' as either 0 
+(false) or 1 (true)
+- list.php takes no arguments and returns all notes that are in the 
+database.
+- add_note.php takes arguments:
+    - device_id, a GUID/UUID
+    - author, the name of the user who submitted the note
+    - location, a free-form text field for the user's location
+    - note, the note to be added.
