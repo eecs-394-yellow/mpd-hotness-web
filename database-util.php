@@ -27,7 +27,7 @@ class GeoNotesPDO extends PDO {
             return ($this->prepare_cache[$proc_name] = $this->prepare($sql));
         }
         else {
-            throw new Exception("Query '$proc_name' not defined.");
+            throw new ProcedureCallError("Query '$proc_name' not defined.");
         }
     }
 
@@ -61,7 +61,7 @@ function get_connection() {
         return new GeoNotesPDO($DSN, $USER, $PASS, 'database-queries.ini');
     }
     catch(PDOException $e) {
-        die('Could not connect: ' . $e->getMessage());
+        json_encode(array('succeeded' => 0, 'error' => $e->getMessage()));
     }
 }
 ?>
