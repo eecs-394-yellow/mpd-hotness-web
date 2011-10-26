@@ -2,6 +2,7 @@
 drop table if exists Notes;
 
 create table Notes (
+    note_id int not null auto_increment primary key,
     -- device UUID
     device_id binary(16) not null,
     -- username (not really verified)
@@ -13,8 +14,7 @@ create table Notes (
     -- user's location in GPS coordinates
     gps Point not null,
     -- text of user's note
-    note_text varchar(255) not null,
-    primary key(device_id, time)
+    note_text varchar(255) not null
 );
 
 drop view if exists ViewNotes;
