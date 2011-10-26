@@ -19,7 +19,8 @@ create table Notes (
 
 drop view if exists ViewNotes;
 create view ViewNotes as
-    select uuid_from_binary(device_id) as device_id,
+    select note_id,
+           uuid_from_binary(device_id) as device_id,
            user_name,
            time,
            location_description,
