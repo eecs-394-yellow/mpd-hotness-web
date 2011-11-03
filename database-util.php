@@ -7,7 +7,7 @@ function last_error_str($sth) {
 class ProcedureCallError extends Exception { }
 
 // Utility class to keep queries out of client code
-class GeoNotesPDO extends PDO {
+class MPDHotnessPDO extends PDO {
     private $queries;
     private $prepare_cache = array();
 
@@ -58,10 +58,10 @@ class GeoNotesPDO extends PDO {
 function get_connection() {
     require('database-config.php');
     try {
-        return new GeoNotesPDO($DSN, $USER, $PASS, 'database-queries.ini');
+        return new MPDHotnessPDO($DSN, $USER, $PASS, 'database-queries.ini');
     }
     catch(PDOException $e) {
-        json_encode(array('succeeded' => 0, 'error' => $e->getMessage()));
+        die(json_encode(array('succeeded' => 0, 'error' => $e->getMessage())));
     }
 }
 ?>

@@ -1,7 +1,12 @@
-drop procedure if exists usp_insert_note;
+drop procedure if exists usp_rate_place;
 delimiter //
-create procedure usp_insert_note(deviceId CHAR(36), author VARCHAR(32), location VARCHAR(255), gps VARCHAR(32), notes VARCHAR(255))
+create procedure usp_rate_place(place_id char(36), rating tinyint, location VARCHAR(32))
 begin
-    insert into Notes(device_id, user_name, time, location_description, gps, note_text)
-                values(binary_from_uuid(deviceId), author, NOW(), location, GeomFromText(gps), notes);
+    if (select count(*) from places where place_name = place_id) = 0 then
+        insert into places(place_name, location)
+        values (place_id, geomFromText(location));
+    end if;
+    
+    insert into ratings(place_name, time, rating)
+    values (place_id, now(), rating);
 end//

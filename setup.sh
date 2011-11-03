@@ -12,7 +12,7 @@ fi
 DESTDIR=$1
 PREFIX=$(getrelpath . $DESTDIR)
 
-for phpfile in index.php list.php ; do
+for phpfile in list_places.php rate_place.php ; do
     ln -sf "${PREFIX}/${phpfile}" "$DESTDIR"
 done
 

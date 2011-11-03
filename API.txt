@@ -3,10 +3,13 @@ The API here is pretty straightforward.  The requests take parameters
 
 - All pages return a JSON object with the key 'succeeded' as either 0 
 (false) or 1 (true)
-- list.php takes no arguments and returns all notes that are in the 
-database.
-- add_note.php takes arguments:
-    - device_id, a GUID/UUID
-    - author, the name of the user who submitted the note
-    - location, a free-form text field for the user's location
-    - note, the note to be added.
+- list_places.php takes no arguments and returns an array of places, with 
+    { place_uuid: 'Actually the place\'s name', 
+      rating: (1.0-5.0), 
+      lat: (lat),
+      lon: (lon) }
+- rate_place.php takes four arguments:
+    - place_id: ID of the location (mock-up: can use name until we add google integration)
+    - rating: 1-5
+    - lat: (lat)
+    - lon: (lon)

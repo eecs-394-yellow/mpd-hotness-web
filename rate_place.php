@@ -18,10 +18,10 @@ function point_wkt($lat, $lon) {
     }
 }
 
-function get_add_note_args($req) {
+function get_rate_place_args($req) {
     $args = array();
     $missing = array();
-    $required = array('device_id', 'user_name', 'location_text', 'note');
+    $required = array('place_id', 'rating');
     foreach($required as $required_arg) {
         if(empty($req[$required_arg])) {
             $missing[] = $required_arg;
@@ -30,22 +30,18 @@ function get_add_note_args($req) {
             $args[$required_arg] = $req[$required_arg];
         }
     }
-    $args['gps_wkt'] = point_wkt($req['lat'], $req['lon']);
+    $args['location'] = point_wkt(@$req['lat'], @$req['lon']);
     if(count($missing)) {
         throw new ArgumentMissingException($missing);
     }
     return $args;
 }
 
-function add_note($con, $args) {
-    return $con->call_procedure('add_note', $args);
-}
-
 $con = get_connection();
 
 try {
-    $args = get_add_note_args($_REQUEST);
-    add_note($con, $args);
+    $args = get_rate_place_args($_REQUEST);
+    $con->call_procedure('rate_place', $args);
     $output = array('succeeded' => 1);
 }
 catch(Exception $e) {

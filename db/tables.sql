@@ -1,29 +1,14 @@
--- Create and initialize the Note table
-drop table if exists Notes;
-
-create table Notes (
-    note_id int not null auto_increment primary key,
-    -- device UUID
-    device_id binary(16) not null,
-    -- username (not really verified)
-    user_name varchar(32) not null,
-    -- posting time
-    time datetime not null,
-    -- user's description of their location
-    location_description varchar(255) null,
-    -- user's location in GPS coordinates
-    gps Point not null,
-    -- text of user's note
-    note_text varchar(255) not null
+drop table if exists places;
+create table places (
+    place_name varchar(32) not null,
+    location Point not null,
+    primary key(place_name)
 );
 
-drop view if exists ViewNotes;
-create view ViewNotes as
-    select note_id,
-           uuid_from_binary(device_id) as device_id,
-           user_name,
-           time,
-           location_description,
-           AsText(gps) as gps,
-           note_text
-    from Notes;
+drop table if exists ratings;
+create table ratings (
+    place_name varchar(32) not null,
+    rating tinyint not null,
+    time datetime not null,
+    foreign key(place_name) references places
+);
