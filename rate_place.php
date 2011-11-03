@@ -48,5 +48,5 @@ catch(Exception $e) {
     $output = array('succeeded' => 0, 'error' => $e->getMessage());
 }
 
-echo json_encode($output);
+jsonp_print($output);
 ?>

@@ -1,4 +1,8 @@
 <?php
+function jsonp_print($struct) {
+    echo $_REQUEST['CALLBACK'] . '(' . json_encode($struct) . ')';
+}
+
 function last_error_str($sth) {
     $ei = $sth->errorInfo();
     return $ei[2];
