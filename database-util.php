@@ -1,6 +1,6 @@
 <?php
 function jsonp_print($struct) {
-    echo $_REQUEST['CALLBACK'] . '(' . json_encode($struct) . ')';
+    echo $_REQUEST['callback'] . '(' . json_encode($struct) . ')';
 }
 
 function last_error_str($sth) {
