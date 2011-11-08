@@ -9,15 +9,6 @@ class ArgumentMissingException extends Exception {
     }
 }
 
-function point_wkt($lat, $lon) {
-    if(is_numeric($lat) and is_numeric($lon)) {
-        return "POINT($lat $lon)";
-    }
-    else {
-        throw new Exception("Either latitude or longitude is not numeric");
-    }
-}
-
 function get_rate_place_args($req) {
     $args = array();
     $missing = array();

@@ -1,4 +1,12 @@
 <?php
+
+if(get_magic_quotes_gpc()) {
+    foreach($_REQUEST as $k => $v) {
+        $_REQUEST[$k] = stripslashes($v);
+    }
+}
+
+
 function jsonp_print($struct) {
     echo $_REQUEST['callback'] . '(' . json_encode($struct) . ')';
 }
@@ -6,6 +14,15 @@ function jsonp_print($struct) {
 function last_error_str($sth) {
     $ei = $sth->errorInfo();
     return $ei[2];
+}
+
+function point_wkt($lat, $lon) {
+    if(is_numeric($lat) and is_numeric($lon)) {
+        return "POINT($lat $lon)";
+    }
+    else {
+        throw new Exception("Either latitude or longitude is not numeric");
+    }
 }
 
 class ProcedureCallError extends Exception { }

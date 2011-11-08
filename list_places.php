@@ -6,7 +6,13 @@ require('database-util.php');
 
 try {
     $con = get_connection();
-    $message = $con->call_procedure('get_all_places', null, PDO::FETCH_ASSOC);
+    if(!empty($_GET['lat']) and !empty($_GET['lon'])) {
+        $gps = point_wkt($_GET['lat'], $_GET['lon']);
+        $message = $con->call_procedure('get_closest_places', array('gps' => $gps), PDO::FETCH_ASSOC);
+    }
+    else {
+        $message = $con->call_procedure('get_all_places', null, PDO::FETCH_ASSOC);
+    }
 }
 catch(ProcedureCallError $err) {
     $message = array('error' => $err->getMessage());

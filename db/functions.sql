@@ -25,14 +25,14 @@ drop function if exists haversine //
 
 -- haversine calculates distance between gps coordinates
 create function haversine(a Point, b Point)
-returns decimal(30, 15)
+returns decimal(30, 8)
 deterministic
 begin
-    declare radius decimal(30, 15);
-    declare lat1 decimal(30, 15);
-    declare lat2 decimal(30, 15);
-    declare lon1 decimal(30, 15);
-    declare lon2 decimal(30, 15);
+    declare radius decimal(30, 8);
+    declare lat1 decimal(30, 8);
+    declare lat2 decimal(30, 8);
+    declare lon1 decimal(30, 8);
+    declare lon2 decimal(30, 8);
     set radius = 3963.1676;
     set lat1 = radians(x(a)), lat2 = radians(x(b)), lon1 = radians(y(a)), lon2 = radians(y(b));
     return radius * ACOS(COS(lat1) * COS(lat2) * COS(lon1 - lon2) + SIN(lat1) * SIN(lat2));
