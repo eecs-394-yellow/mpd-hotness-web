@@ -17,7 +17,7 @@ function last_error_str($sth) {
 }
 
 function point_wkt($lat, $lon) {
-    if(is_float($lat) and is_float($lon)) {
+    if(is_numeric($lat) and is_numeric($lon)) {
         return "POINT($lat $lon)";
     }
     else {
