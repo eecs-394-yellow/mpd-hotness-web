@@ -4,7 +4,7 @@ The API here is pretty straightforward.  The requests take parameters
 - All pages return a JSON object with the key 'succeeded' as either 0 
 (false) or 1 (true)
 - list_places.php takes no arguments and returns an array of places, with 
-    { place_uuid: 'Actually the place\'s name', 
+    { place_id: The 40-character Google Places ID,
       rating: (1.0-5.0), 
       lat: (lat),
       lon: (lon) }
