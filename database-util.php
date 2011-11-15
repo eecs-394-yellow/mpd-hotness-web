@@ -6,9 +6,10 @@ if(get_magic_quotes_gpc()) {
     }
 }
 
+require('json-pretty.php');
 
 function jsonp_print($struct) {
-    echo $_REQUEST['callback'] . '(' . json_encode($struct) . ')';
+    echo $_REQUEST['callback'] . '(' . json_indent(json_encode($struct)) . ')';
 }
 
 function last_error_str($sth) {

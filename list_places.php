@@ -1,18 +1,20 @@
 <?php
+
 header('content-type: text/plain');
 
 require('config.php');
 require('database-util.php');
 
+function get_args() {
+    $age = !empty($_GET['max_age_minutes']) ? $_GET['max_age_minutes'] : 30;
+    $gps = point_wkt(@$_GET['lat'], @$_GET['lon']);
+    return array('max_age_minutes' => $age, 'gps' => $gps);
+}
+
 try {
     $con = get_connection();
-    if(!empty($_GET['lat']) and !empty($_GET['lon'])) {
-        $gps = point_wkt($_GET['lat'], $_GET['lon']);
-        $message = $con->call_procedure('get_closest_places', array('gps' => $gps), PDO::FETCH_ASSOC);
-    }
-    else {
-        $message = $con->call_procedure('get_all_places', null, PDO::FETCH_ASSOC);
-    }
+    $gps = point_wkt($_GET['lat'], $_GET['lon']);
+    $message = $con->call_procedure('get_closest_places', get_args(), PDO::FETCH_ASSOC);
 }
 catch(ProcedureCallError $err) {
     $message = array('error' => $err->getMessage());
@@ -22,3 +24,5 @@ catch(Exception $ex) {
 }
 
 jsonp_print($message);
+
+?>

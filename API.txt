@@ -1,9 +1,12 @@
 The API here is pretty straightforward.  The requests take parameters 
 (for now GET or POST, either works) and return JSON.
 
-- All pages return a JSON object with the key 'succeeded' as either 0 
+- All pages return a JSONP object with the key 'succeeded' as either 0 
 (false) or 1 (true)
-- list_places.php takes no arguments and returns an array of places, with 
+- list_places.php takes these arguments:
+    - lat, lon: current latitude and longitude
+    - max_age_minutes
+  and returns an array of places, with 
     { place_id: The 40-character Google Places ID,
       rating: (1.0-5.0), 
       lat: (lat),
