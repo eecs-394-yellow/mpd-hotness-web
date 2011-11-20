@@ -14,7 +14,18 @@ function get_args() {
 try {
     $con = get_connection();
     $gps = point_wkt($_GET['lat'], $_GET['lon']);
-    $message = $con->call_procedure('get_closest_places', get_args(), PDO::FETCH_ASSOC);
+    $data = $con->call_procedure('get_closest_places', get_args(), PDO::FETCH_ASSOC);
+    if(@$_GET['version'] == '2') {
+        $message = array();
+        foreach($data as $row) {
+            $id = $row['place_id'];
+            unset($row['place_id']);
+            $message[$id] = $row;
+        }
+    }
+    else {
+        $message = $data;
+    }
 }
 catch(ProcedureCallError $err) {
     $message = array('error' => $err->getMessage());
