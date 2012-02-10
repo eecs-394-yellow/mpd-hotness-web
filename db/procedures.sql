@@ -13,14 +13,25 @@ end//
 
 drop procedure if exists usp_get_places//
 
-create procedure usp_get_places(loc Point, rating_age_minutes int)
+create procedure usp_get_places(loc Point, rating_age_minutes int, max_distance int)
 begin
     select place_id, X(p.location) lat, Y(p.location) lon, 
            haversine(loc, location) distance, rating, ifnull(rating_count, 0) rating_count  
     from places p
     left join (select place_id, avg(rating) rating, count(rating) rating_count
-          from ratings 
-          where ratings.time > date_sub(now(), interval rating_age_minutes minute)
-          group by place_id) ratings_sq using(place_id)
+               from ratings 
+               where ratings.time > date_sub(now(), interval rating_age_minutes minute)
+               group by place_id) ratings_sq using(place_id)
+    having distance <= max_distance
     order by distance asc;
+end//
+
+drop procedure if exists usp_get_place//
+
+create procedure usp_get_place(place_id_ char(40), max_age_minutes int)
+begin
+    select avg(rating) rating, count(rating) rating_count
+    from ratings
+    where ratings.time > date_sub(now(), interval max_age_minutes minute)
+    and place_id = place_id_;
 end//

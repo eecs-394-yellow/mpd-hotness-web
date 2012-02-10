@@ -8,7 +8,7 @@ require('database-util.php');
 function get_args() {
     $age = !empty($_GET['max_age_minutes']) ? $_GET['max_age_minutes'] : 30;
     $gps = point_wkt(@$_GET['lat'], @$_GET['lon']);
-    return array('max_age_minutes' => $age, 'gps' => $gps);
+    return array('max_age_minutes' => $age, 'gps' => $gps, 'max_distance' => 10);
 }
 
 try {
